@@ -5,4 +5,7 @@
     <string name="title_notifications">Notifications</string>
     <string name="title_notes">Notes</string>
     <string name="title_Folders">Folder</string>
+    <string name="add_new_folder">add new folder</string>
+    <string name="add_new_note">Add new Note</string>
+    <string name="page_title">Notes</string>
 </resources>

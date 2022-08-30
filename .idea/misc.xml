@@ -6,10 +6,14 @@
         <entry key="..\:/NotesAppTest/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.2465" />
         <entry key="..\:/NotesAppTest/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.2465" />
         <entry key="..\:/NotesAppTest/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/NotesAppTest/app/src/main/res/layout/folder_item_layout.xml" value="0.25" />
         <entry key="..\:/NotesAppTest/app/src/main/res/layout/fragment_dashboard.xml" value="0.25" />
         <entry key="..\:/NotesAppTest/app/src/main/res/layout/fragment_folders.xml" value="0.25" />
         <entry key="..\:/NotesAppTest/app/src/main/res/layout/fragment_notes.xml" value="0.20244565217391305" />
+        <entry key="..\:/NotesAppTest/app/src/main/res/layout/mainactivitytoolbar.xml" value="0.22554347826086957" />
+        <entry key="..\:/NotesAppTest/app/src/main/res/layout/note_item_layout.xml" value="0.25" />
         <entry key="..\:/NotesAppTest/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25" />
+        <entry key="..\:/NotesAppTest/app/src/main/res/menu/top_app_bar.xml" value="0.25" />
       </map>
     </option>
   </component>

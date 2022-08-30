@@ -1,6 +1,7 @@
 package com.example.notesapptest
 
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -62,9 +63,20 @@ class MainActivity : AppCompatActivity() {
                         var n = Note(0,"test note 4",2,"this is a test note")
                         addNote(n)
                     }
-                    //
-                    // Update Notes list to viewmodel here
-                    //
+                    if(!this.ifNoteExists("test note 5")){
+                        var n = Note(0,"test note 5",3,"this is a test note with a long content to check out the view. programming FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW ")
+                        addNote(n)
+                    }
+                    runOnUiThread {
+                        notesDB.noteDAO().getNotesList().observe(this@MainActivity){
+                            if(it!=null)
+                                if(it.isNotEmpty()){
+                                    Log.d("NOTES LIST DATA::::", "${it}")
+                                    notesViewModel.updateNoteList(it)
+
+                                }
+                        }
+                    }
                 }
             }
             foldersDB.apply {
@@ -85,16 +97,28 @@ class MainActivity : AppCompatActivity() {
                         var f = Folder(0,"test folder 4" , 0)
                         addFolder(f)
                     }
-                    //
-                    //update folder list to viewmodel here
-                    //
+                    runOnUiThread {
+                        foldersDB.folderDAO().getFolderList().observe(this@MainActivity){
+                            if(it!=null)
+                                if(it.isNotEmpty()){
+                                    Log.d("FOLDERS LIST DATA::::", "${it}")
+                                    foldersViewModel.updateFolderList(it)
+                                }
+                        }
+                    }
                 }
             }
 
+
         }
+        notesViewModel.updateDB(notesDB)
+        foldersViewModel.updateDB(foldersDB)
+
+        setUpToolbar()
+
         binding?.apply {
 //            val navView: BottomNavigationView = navView
-
+//            setSupportActionBar(topAppBar)
             val navController = findNavController(R.id.nav_host_fragment_activity_main)
             // Passing each menu ID as a set of Ids because each
             // menu should be considered as top level destinations.
@@ -108,6 +132,12 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    private fun setUpToolbar() {
+        setSupportActionBar(binding?.topapptoolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(true)
     }
 
 }

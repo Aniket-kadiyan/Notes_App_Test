@@ -20,7 +20,7 @@ interface FolderDAO {
 
     //for initial testing only. Not required in actual operation
     // can also be done using folder title
-    @Query("SELECT * FROM Folders WHERE folderId = :id")
-    fun ifFolderExists( id : Int) : Boolean
+    @Query("SELECT * FROM Folders WHERE title=:title")
+    fun ifFolderExists( title:String) : Boolean
 
 }

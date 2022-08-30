@@ -2,13 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_Notes"
-
+        android:id="@+id/notesFragment"
+        android:icon="@drawable/ic_action_notes"
         android:title="@string/title_notes" />
 
     <item
-        android:id="@+id/navigation_Folders"
-
+        android:id="@+id/foldersFragment"
+        android:icon="@drawable/ic_action_folder_open"
         android:title="@string/title_Folders" />
 
 </menu>

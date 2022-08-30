@@ -7,11 +7,11 @@
     <fragment
         android:id="@+id/notesFragment"
         android:name="com.example.notesapptest.ui.Notes.NotesFragment"
-        android:label="fragment_folders"
-        tools:layout="@layout/fragment_folders" />
+        android:label="@string/title_notes"
+        tools:layout="@layout/fragment_notes" />
     <fragment
         android:id="@+id/foldersFragment"
         android:name="com.example.notesapptest.ui.Folders.FoldersFragment"
-        android:label="fragment_notes"
-        tools:layout="@layout/fragment_notes" />
+        android:label="@string/title_Folders"
+        tools:layout="@layout/fragment_folders" />
 </navigation>

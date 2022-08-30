@@ -1,5 +1,6 @@
 package com.example.notesapptest.data_models
 
+import android.icu.text.CaseMap
 import androidx.lifecycle.LiveData
 import androidx.room.*
 
@@ -18,6 +19,6 @@ interface NoteDAO {
     fun getNotesList(): LiveData<List<Note>>
 
     //for initial testing only. Not required in actual operation
-    @Query("SELECT * FROM Notes WHERE noteId=:id")
-    fun ifNoteExists( id:Int) : Boolean
+    @Query("SELECT * FROM Notes WHERE title=:title")
+    fun ifNoteExists( title: String) : Boolean
 }

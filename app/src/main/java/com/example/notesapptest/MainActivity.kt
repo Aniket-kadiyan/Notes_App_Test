@@ -145,7 +145,10 @@ class MainActivity : AppCompatActivity() {
             if(it!=null) {
                 var intent = Intent(applicationContext, EditNoteActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                this.applicationContext.startActivity(intent)
+                var bundle = Bundle()
+                bundle.putInt("note_id",it.noteId)
+                intent.putExtras(bundle)
+                this.applicationContext.startActivity(intent,bundle)
             }
         }
         viewNotesinFolderViewModel!!.getViewFolder().observe(this){

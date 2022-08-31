@@ -1,6 +1,7 @@
 package com.example.notesapptest.ui.Edit_Notes
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -34,13 +35,19 @@ class EditNoteActivity : AppCompatActivity() {
         setUpToolbar()
         var title="hello"
         var content="world"
-        editNoteViewModel!!.getNote().observe(this){
-            title=it.noteTitle
-            content=it.content
-        }
 
-        binding?.noteTitleInput?.setText(title , TextView.BufferType.EDITABLE)
-        binding?.noteContentInput?.setText(content,TextView.BufferType.EDITABLE)
+        var bundle = intent.extras!!
+        var id = bundle.getInt("note_id")
+       notesDB.noteDAO().getNotebyID(id).observe(this){
+           if(!it.isEmpty()){
+
+               binding?.noteTitleInput?.setText( it.get(0).noteTitle, TextView.BufferType.EDITABLE)
+               binding?.noteContentInput?.setText(it.get(0).content,TextView.BufferType.EDITABLE)
+           }
+       }
+
+//        binding?.noteTitleInput?.setText(title , TextView.BufferType.EDITABLE)
+//        binding?.noteContentInput?.setText(content,TextView.BufferType.EDITABLE)
     }
 
     private fun setUpToolbar() {

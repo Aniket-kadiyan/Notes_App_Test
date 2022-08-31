@@ -64,6 +64,7 @@ class ViewNotesinFolderActivity : AppCompatActivity() {
                         if(it.isNotEmpty()){
                             Log.d("NOTES LIST DATA::::", " in view notes in folder::: ${it}")
                             var adapter = NoteAdapter(it , editNoteViewModel!!)
+
                             binding?.viewNotesinFolderRV?.adapter =adapter
                         }
                 }
@@ -75,6 +76,9 @@ class ViewNotesinFolderActivity : AppCompatActivity() {
             if(it!=null) {
                 var intent = Intent(applicationContext, EditNoteActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                var bundle = Bundle()
+                bundle.putInt("note_id",it.noteId)
+                intent.putExtras(bundle)
                 this.applicationContext.startActivity(intent)
             }
         }

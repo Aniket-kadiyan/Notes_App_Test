@@ -21,4 +21,7 @@ interface NoteDAO {
     //for initial testing only. Not required in actual operation
     @Query("SELECT * FROM Notes WHERE title=:title")
     fun ifNoteExists( title: String) : Boolean
+
+    @Query("SELECT * FROM Notes WHERE folder=:id")
+    fun getNotesinFolder(id :Int) : LiveData<List<Note>>
 }

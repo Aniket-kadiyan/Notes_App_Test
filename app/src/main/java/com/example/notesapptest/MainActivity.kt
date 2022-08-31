@@ -1,11 +1,14 @@
 package com.example.notesapptest
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -16,8 +19,12 @@ import com.example.notesapptest.data_models.FolderDatabase
 import com.example.notesapptest.data_models.Note
 import com.example.notesapptest.data_models.NoteDatabase
 import com.example.notesapptest.databinding.ActivityMainBinding
+import com.example.notesapptest.ui.Edit_Notes.EditNoteActivity
+import com.example.notesapptest.ui.Edit_Notes.EditNoteViewModel
 import com.example.notesapptest.ui.Folders.FoldersViewModel
 import com.example.notesapptest.ui.Notes.NotesViewModel
+import com.example.notesapptest.ui.View_Notes_in_Folder.ViewNotesinFolderActivity
+import com.example.notesapptest.ui.View_Notes_in_Folder.ViewNotesinFolderViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -31,6 +38,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var notesDB : NoteDatabase
     private lateinit var foldersViewModel: FoldersViewModel
     private lateinit var notesViewModel: NotesViewModel
+    private var editNoteViewModel : EditNoteViewModel?=null
+    private var viewNotesinFolderViewModel : ViewNotesinFolderViewModel?=null
 
 
 
@@ -41,6 +50,8 @@ class MainActivity : AppCompatActivity() {
 
         notesViewModel=ViewModelProvider(this).get(NotesViewModel::class.java)
         foldersViewModel=ViewModelProvider(this).get(FoldersViewModel::class.java)
+        editNoteViewModel=ViewModelProvider(this).get(EditNoteViewModel::class.java)
+        viewNotesinFolderViewModel=ViewModelProvider(this).get(ViewNotesinFolderViewModel::class.java)
         notesDB = Room.databaseBuilder(applicationContext, NoteDatabase::class.java, "notesDB").allowMainThreadQueries().build()
         foldersDB=Room.databaseBuilder(applicationContext,FolderDatabase::class.java,"foldersDB").allowMainThreadQueries().build()
 
@@ -48,15 +59,15 @@ class MainActivity : AppCompatActivity() {
             notesDB.apply {
                 noteDAO().apply {
                     if(!this.ifNoteExists("test note 1")){
-                        var n = Note(0,"test note 1",1,"this is a test note")
+                        var n = Note(0,"test note 1",2,"this is a test note")
                         addNote(n)
                     }
                     if(!this.ifNoteExists("test note 2")){
-                        var n = Note(0,"test note 2",1,"this is a test note")
+                        var n = Note(0,"test note 2",2,"this is a test note")
                         addNote(n)
                     }
                     if(!this.ifNoteExists("test note 3")){
-                        var n = Note(0,"test note 3",1,"this is a test note")
+                        var n = Note(0,"test note 3",4,"this is a test note")
                         addNote(n)
                     }
                     if(!this.ifNoteExists("test note 4")){
@@ -81,20 +92,20 @@ class MainActivity : AppCompatActivity() {
             }
             foldersDB.apply {
                 folderDAO().apply {
-                    if(!this.ifFolderExists("test folder 1")){
-                        var f = Folder(0,"test folder 1" , 3)
+                    if(!this.ifFolderExists("All notes")){
+                        var f = Folder(0,"All notes" , 5)
                         addFolder(f)
                     }
                     if(!this.ifFolderExists("test folder 2")){
-                        var f = Folder(0,"test folder 2" , 1)
+                        var f = Folder(0,"test folder 2" , 3)
                         addFolder(f)
                     }
                     if(!this.ifFolderExists("test folder 3")){
-                        var f = Folder(0,"test folder 3" , 0)
+                        var f = Folder(0,"test folder 3" , 1)
                         addFolder(f)
                     }
                     if(!this.ifFolderExists("test folder 4")){
-                        var f = Folder(0,"test folder 4" , 0)
+                        var f = Folder(0,"test folder 4" , 1)
                         addFolder(f)
                     }
                     runOnUiThread {
@@ -130,6 +141,26 @@ class MainActivity : AppCompatActivity() {
             setupActionBarWithNavController(navController, appBarConfiguration)
             navView.setupWithNavController(navController)
         }
+        editNoteViewModel!!.getNote().observe(this){
+            if(it!=null) {
+                var intent = Intent(applicationContext, EditNoteActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                this.applicationContext.startActivity(intent)
+            }
+        }
+        viewNotesinFolderViewModel!!.getViewFolder().observe(this){
+            if(it!=null) {
+                Log.d("main  view folder:::", "$it ")
+                var intent = Intent(applicationContext, ViewNotesinFolderActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                var bundle = Bundle()
+                bundle.putInt("folder_id", it.folderId)
+                bundle.putString("folder_title",it.folderTitle)
+                intent.putExtras(bundle)
+                this.applicationContext.startActivity(intent,bundle)
+            }
+
+        }
 
 
     }
@@ -138,6 +169,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding?.topapptoolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(true)
+//        supportActionBar?.hide()
     }
 
 }

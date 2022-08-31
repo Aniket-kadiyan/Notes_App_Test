@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topapptoolbarviewNoteinFolder"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
+        android:elevation="3dp"
+        android:padding="1dp"
+        android:layout_margin="1dp"
+        app:menu="@menu/top_app_bar"
+        android:background="@color/yellow_2"
+        app:navigationIcon="@drawable/ic_home_black_24dp"
+        app:title="@string/page_title" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/viewNotesinFolderRV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/topapptoolbarviewNoteinFolder"
+        android:layout_marginTop="40dp"
+        android:padding="16dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2"
+
+        />
+
+
+</RelativeLayout>

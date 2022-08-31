@@ -6,24 +6,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.Toolbar
+
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topapptoolbar"
+        style="@style/Widget.MaterialComponents.Toolbar.PrimarySurface"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:background="@color/yellow_2"
-        app:titleTextColor="@color/black"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:padding="0dp"
+        android:elevation="10dp"
         app:menu="@menu/top_app_bar"
-        />
+        app:navigationIcon="@drawable/ic_home_black_24dp"
+        app:title="@string/page_title" />
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
         android:background="?android:attr/windowBackground"
-      android:layout_alignParentBottom="true"
 
         app:menu="@menu/bottom_nav_menu" />
 
@@ -32,9 +40,9 @@
         android:id="@+id/nav_host_fragment_activity_main"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignTop="@id/topapptoolbar"
-        android:layout_alignBottom="@id/nav_view"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/nav_view"
+        android:layout_below="@id/topapptoolbar"
         app:defaultNavHost="true"
 
         app:navGraph="@navigation/mobile_navigation" />
@@ -46,7 +54,10 @@
         android:layout_above="@+id/nav_view"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         android:clickable="true"
         android:contentDescription="@string/add_new_note"
         android:minHeight="50dp"

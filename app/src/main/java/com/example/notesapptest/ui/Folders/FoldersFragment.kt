@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.notesapptest.data_models.FolderDatabase
 import com.example.notesapptest.databinding.FragmentFoldersBinding
 import com.example.notesapptest.ui.Notes.NotesViewModel
+import com.example.notesapptest.ui.View_Notes_in_Folder.ViewNotesinFolderViewModel
 
 
 class FoldersFragment : Fragment() {
@@ -21,11 +22,17 @@ class FoldersFragment : Fragment() {
     get() = _binding!!
 
     private var viewModelInstance : FoldersViewModel?=null
+    private var notesviewModelInstance : NotesViewModel?=null
+    private var viewNotesinFolderViewModel : ViewNotesinFolderViewModel?=null
+
     lateinit var foldersDB : FolderDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModelInstance = ViewModelProvider(requireActivity()).get(FoldersViewModel::class.java)
+        notesviewModelInstance = ViewModelProvider(requireActivity()).get(NotesViewModel::class.java)
+        viewNotesinFolderViewModel = ViewModelProvider(requireActivity()).get(ViewNotesinFolderViewModel::class.java)
+
     }
 
     override fun onCreateView(
@@ -49,7 +56,7 @@ class FoldersFragment : Fragment() {
         viewModelInstance!!.getFolderList().observe(viewLifecycleOwner){
             if(it!=null)
                 if(it.isNotEmpty()){
-                    val adapter = FolderAdatper(it)
+                    val adapter = FolderAdatper(it , viewNotesinFolderViewModel!!)
                     binding.folderRV.visibility=View.VISIBLE
                     binding.folderRV.isVisible=true
                     binding.textDashboard.visibility=View.INVISIBLE

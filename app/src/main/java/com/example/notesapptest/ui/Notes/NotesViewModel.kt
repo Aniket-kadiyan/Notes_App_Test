@@ -13,6 +13,7 @@ class NotesViewModel : ViewModel() {
     private val noteList = MutableLiveData<List<Note>>()
     private val notesDB = MutableLiveData<NoteDatabase>()
 
+
     fun updateDB(db: NoteDatabase){
         notesDB.value=db
     }
@@ -26,5 +27,6 @@ class NotesViewModel : ViewModel() {
     private val _text = MutableLiveData<String>().apply {
         value = "This is notes Fragment"
     }
+
     val text: LiveData<String> = _text
 }

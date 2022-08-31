@@ -1,16 +1,22 @@
 package com.example.notesapptest.ui.Edit_Notes
 
+import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
+import com.example.notesapptest.MainActivity
 import com.example.notesapptest.data_models.FolderDatabase
 import com.example.notesapptest.data_models.NoteDatabase
 import com.example.notesapptest.databinding.EditnotelayoutBinding
 import com.example.notesapptest.ui.Folders.FoldersViewModel
 import com.example.notesapptest.ui.Notes.NotesViewModel
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class EditNoteActivity : AppCompatActivity() {
     private var _binding : EditnotelayoutBinding?=null
@@ -43,6 +49,41 @@ class EditNoteActivity : AppCompatActivity() {
 
                binding?.noteTitleInput?.setText( it.get(0).noteTitle, TextView.BufferType.EDITABLE)
                binding?.noteContentInput?.setText(it.get(0).content,TextView.BufferType.EDITABLE)
+           }
+       }
+       binding?.apply {
+//            noteTitleInput.addTextChangedListener(object : TextWatcher{
+//                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
+//                override fun afterTextChanged(p0: Editable?) {
+//                    GlobalScope.launch {
+//                        notesDB.noteDAO().updateNote(p0.toString() , noteContentInput.text.toString() , id )
+//                    }
+//                }
+//                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//
+//                }
+//            })
+//           noteContentInput.addTextChangedListener(object: TextWatcher{
+//               override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
+//               override fun afterTextChanged(p0: Editable?) {
+//                   GlobalScope.launch {
+//                       notesDB.noteDAO().updateNote(noteTitleInput.text.toString() ,p0.toString() ,  id )
+//                   }
+//               }
+//               override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//
+//               }
+//           })
+
+           saveNoteButton.setOnClickListener(){
+               GlobalScope.launch {
+                   notesDB.noteDAO().updateNoteTitle(noteTitleInput.text.toString() ,id)
+                   Log.d("note title update:::", "id = $id  title = ${noteTitleInput.text.toString()}")
+                   notesDB.noteDAO().updateNoteContent(noteContentInput.text.toString(),id)
+
+                   }
+               var intent = Intent(applicationContext , MainActivity::class.java)
+               this@EditNoteActivity.applicationContext.startActivity(intent)
            }
        }
 

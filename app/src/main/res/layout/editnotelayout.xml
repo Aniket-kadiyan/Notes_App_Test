@@ -76,4 +76,15 @@
         android:inputType="textMultiLine"
         android:padding="5dp"
         android:textSize="20sp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/saveNoteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        app:srcCompat="?android:attr/textCheckMarkInverse" />
 </RelativeLayout>

@@ -140,7 +140,21 @@ class MainActivity : AppCompatActivity() {
             )
             setupActionBarWithNavController(navController, appBarConfiguration)
             navView.setupWithNavController(navController)
+
+            addButton.setOnClickListener(View.OnClickListener {
+                if(navController.currentDestination?.id  == R.id.notesFragment){
+                    var n = Note(0,"New note",2,"...")
+                    GlobalScope.launch{notesDB.noteDAO().addNote(n)}
+                    editNoteViewModel!!.setNote(n)
+                }
+                if(navController.currentDestination?.id == R.id.foldersFragment){
+                    var f = Folder(0,"new Folder" , 0)
+                    GlobalScope.launch {foldersDB.folderDAO().addFolder(f) }
+                    viewNotesinFolderViewModel!!.setViewFolder(f)
+                }
+            })
         }
+
         editNoteViewModel!!.getNote().observe(this){
             if(it!=null) {
                 var intent = Intent(applicationContext, EditNoteActivity::class.java)
@@ -163,6 +177,31 @@ class MainActivity : AppCompatActivity() {
                 this.applicationContext.startActivity(intent,bundle)
             }
 
+        }
+
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        runOnUiThread {
+            notesDB.noteDAO().getNotesList().observe(this@MainActivity){
+                if(it!=null)
+                    if(it.isNotEmpty()){
+                        Log.d("NOTES LIST DATA::::", "${it}")
+                        notesViewModel.updateNoteList(it)
+
+                    }
+            }
+        }
+        runOnUiThread {
+            foldersDB.folderDAO().getFolderList().observe(this@MainActivity){
+                if(it!=null)
+                    if(it.isNotEmpty()){
+                        Log.d("FOLDERS LIST DATA::::", "${it}")
+                        foldersViewModel.updateFolderList(it)
+                    }
+            }
         }
 
 

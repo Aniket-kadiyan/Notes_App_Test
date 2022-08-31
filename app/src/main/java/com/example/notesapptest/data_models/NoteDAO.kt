@@ -27,4 +27,10 @@ interface NoteDAO {
 
     @Query("SELECT * FROM Notes WHERE noteId=:id")
     fun getNotebyID(id: Int) : LiveData<List<Note>>
+
+    @Query("UPDATE Notes SET title = :title WHERE noteId = :id")
+    fun updateNoteTitle(title : String,  id : Int)
+
+    @Query("UPDATE Notes SET content = :content WHERE noteId = :id")
+    fun updateNoteContent(content : String,  id : Int)
 }

@@ -9,7 +9,7 @@ interface NoteDAO {
     @Insert( onConflict = OnConflictStrategy.REPLACE)
     suspend fun addNote(folder : Note)
 
-    @Update
+    @Update( onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateNote(folder: Note)
 
     @Delete
@@ -18,12 +18,18 @@ interface NoteDAO {
     @Query("SELECT * FROM Notes")
     fun getNotesList(): LiveData<List<Note>>
 
+    @Query("SELECT * FROM Notes")
+    fun getCurrentNotesList(): List<Note>
+
     //for initial testing only. Not required in actual operation
     @Query("SELECT * FROM Notes WHERE title=:title")
     fun ifNoteExists( title: String) : Boolean
 
     @Query("SELECT * FROM Notes WHERE folder=:id")
     fun getNotesinFolder(id :Int) : LiveData<List<Note>>
+
+    @Query("SELECT * FROM Notes WHERE folder=:id")
+    fun getCurrentNotesinFolder(id :Int) : List<Note>
 
     @Query("SELECT * FROM Notes WHERE noteId=:id")
     fun getNotebyID(id: Int) : LiveData<List<Note>>
@@ -33,4 +39,7 @@ interface NoteDAO {
 
     @Query("UPDATE Notes SET content = :content WHERE noteId = :id")
     fun updateNoteContent(content : String,  id : Int)
+
+    @Query("Delete from Notes where noteId = :id")
+    fun deleteNotebyID(id: Int)
 }

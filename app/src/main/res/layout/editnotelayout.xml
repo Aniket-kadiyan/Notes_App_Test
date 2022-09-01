@@ -16,6 +16,36 @@
         app:navigationIcon="@drawable/ic_home_black_24dp"
         app:title="@string/page_title" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/showOptionsButtoneditNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="4dp"
+        app:srcCompat="@android:drawable/ic_menu_sort_by_size" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/deleteNoteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:layout_above="@id/saveNoteButton"
+        android:layout_alignParentRight="true"
+        android:layout_margin="4dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/icons8_delete_24" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/changeFolderButtoneditNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:layout_above="@id/deleteNoteButton"
+        android:layout_alignParentRight="true"
+        android:layout_margin="4dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/ic_action_folder_open" />
 <!--    <ImageButton-->
 <!--        android:id="@+id/saveNote"-->
 <!--        android:layout_width="wrap_content"-->
@@ -82,9 +112,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@id/showOptionsButtoneditNote"
         android:layout_alignParentRight="true"
         android:layout_margin="10dp"
+        android:visibility="invisible"
         android:padding="10dp"
         app:srcCompat="?android:attr/textCheckMarkInverse" />
 </RelativeLayout>

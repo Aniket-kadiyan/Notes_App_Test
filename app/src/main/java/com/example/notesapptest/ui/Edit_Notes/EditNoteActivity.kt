@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import com.example.notesapptest.MainActivity
@@ -15,6 +17,7 @@ import com.example.notesapptest.data_models.NoteDatabase
 import com.example.notesapptest.databinding.EditnotelayoutBinding
 import com.example.notesapptest.ui.Folders.FoldersViewModel
 import com.example.notesapptest.ui.Notes.NotesViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -27,6 +30,7 @@ class EditNoteActivity : AppCompatActivity() {
     private lateinit var foldersViewModel: FoldersViewModel
     private lateinit var notesViewModel: NotesViewModel
     private var editNoteViewModel : EditNoteViewModel?=null
+    var id =0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +47,7 @@ class EditNoteActivity : AppCompatActivity() {
         var content="world"
 
         var bundle = intent.extras!!
-        var id = bundle.getInt("note_id")
+        id = bundle.getInt("note_id")
        notesDB.noteDAO().getNotebyID(id).observe(this){
            if(!it.isEmpty()){
 
@@ -80,10 +84,40 @@ class EditNoteActivity : AppCompatActivity() {
                    notesDB.noteDAO().updateNoteTitle(noteTitleInput.text.toString() ,id)
                    Log.d("note title update:::", "id = $id  title = ${noteTitleInput.text.toString()}")
                    notesDB.noteDAO().updateNoteContent(noteContentInput.text.toString(),id)
-
                    }
                var intent = Intent(applicationContext , MainActivity::class.java)
+               intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                this@EditNoteActivity.applicationContext.startActivity(intent)
+           }
+           deleteNoteButton.setOnClickListener(){
+               notesDB.noteDAO().deleteNotebyID(id)
+               var intent = Intent(applicationContext , MainActivity::class.java)
+               intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+               this@EditNoteActivity.applicationContext.startActivity(intent)
+           }
+           changeFolderButtoneditNote.setOnClickListener {
+               val dialog = BottomSheetDialog(this@EditNoteActivity)
+               dialog.setCancelable(true)
+//               val view = layoutInflater.inflate(R.layout.)
+//               dialog.setContentView(layoutInflater.inflate())
+           }
+           showOptionsButtoneditNote.setOnClickListener(){
+               if( deleteNoteButton.isVisible == false && saveNoteButton.isVisible == false && changeFolderButtoneditNote.isVisible == false ){
+                   deleteNoteButton.visibility = Button.VISIBLE
+                   deleteNoteButton.isVisible = true
+                   saveNoteButton.visibility = Button.VISIBLE
+                   saveNoteButton.isVisible = true
+                   changeFolderButtoneditNote.visibility = Button.VISIBLE
+                   changeFolderButtoneditNote.isVisible = true
+               }
+               else{
+                   deleteNoteButton.visibility = Button.INVISIBLE
+                   deleteNoteButton.isVisible = false
+                   saveNoteButton.visibility = Button.INVISIBLE
+                   saveNoteButton.isVisible = false
+                   changeFolderButtoneditNote.visibility = Button.INVISIBLE
+                   changeFolderButtoneditNote.isVisible = false
+               }
            }
        }
 

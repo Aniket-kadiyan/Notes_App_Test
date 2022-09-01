@@ -25,7 +25,7 @@ class NotesViewModel : ViewModel() {
     fun getNoteList(): MutableLiveData<List<Note>> = noteList
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is notes Fragment"
+        value = "Add new Note"
     }
 
     val text: LiveData<String> = _text

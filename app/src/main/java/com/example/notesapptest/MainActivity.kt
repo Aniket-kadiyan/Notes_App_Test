@@ -40,8 +40,24 @@ class MainActivity : AppCompatActivity() {
     private lateinit var notesViewModel: NotesViewModel
     private var editNoteViewModel : EditNoteViewModel?=null
     private var viewNotesinFolderViewModel : ViewNotesinFolderViewModel?=null
+    var addflag=false
 
 
+    fun updateFolderCount(){
+        var flist = foldersDB.folderDAO().getCurrrentFolderList()
+        for(folder in flist){
+            if(folder.folderId!=1) {
+                var nlist = notesDB.noteDAO().getCurrentNotesinFolder(folder.folderId)
+                foldersDB.folderDAO().updateNoteCount(nlist.size, folder.folderId)
+            }
+            else{
+                var nlist = notesDB.noteDAO().getCurrentNotesList()
+                foldersDB.folderDAO().updateNoteCount(nlist.size , folder.folderId)
+            }
+        }
+
+        Log.d("current folders list", ":: $flist ")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,34 +74,14 @@ class MainActivity : AppCompatActivity() {
         GlobalScope.launch {
             notesDB.apply {
                 noteDAO().apply {
-                    if(!this.ifNoteExists("test note 1")){
-                        var n = Note(0,"test note 1",2,"this is a test note")
-                        addNote(n)
-                    }
-                    if(!this.ifNoteExists("test note 2")){
-                        var n = Note(0,"test note 2",2,"this is a test note")
-                        addNote(n)
-                    }
-                    if(!this.ifNoteExists("test note 3")){
-                        var n = Note(0,"test note 3",4,"this is a test note")
-                        addNote(n)
-                    }
-                    if(!this.ifNoteExists("test note 4")){
-                        var n = Note(0,"test note 4",2,"this is a test note")
-                        addNote(n)
-                    }
-                    if(!this.ifNoteExists("test note 5")){
-                        var n = Note(0,"test note 5",3,"this is a test note with a long content to check out the view. programming FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW  FTW ")
-                        addNote(n)
-                    }
                     runOnUiThread {
                         notesDB.noteDAO().getNotesList().observe(this@MainActivity){
                             if(it!=null)
-                                if(it.isNotEmpty()){
+//                                if(it.isNotEmpty()){
                                     Log.d("NOTES LIST DATA::::", "${it}")
                                     notesViewModel.updateNoteList(it)
 
-                                }
+//                                }
                         }
                     }
                 }
@@ -93,19 +89,7 @@ class MainActivity : AppCompatActivity() {
             foldersDB.apply {
                 folderDAO().apply {
                     if(!this.ifFolderExists("All notes")){
-                        var f = Folder(0,"All notes" , 5)
-                        addFolder(f)
-                    }
-                    if(!this.ifFolderExists("test folder 2")){
-                        var f = Folder(0,"test folder 2" , 3)
-                        addFolder(f)
-                    }
-                    if(!this.ifFolderExists("test folder 3")){
-                        var f = Folder(0,"test folder 3" , 1)
-                        addFolder(f)
-                    }
-                    if(!this.ifFolderExists("test folder 4")){
-                        var f = Folder(0,"test folder 4" , 1)
+                        var f = Folder(1,"All notes" , 0)
                         addFolder(f)
                     }
                     runOnUiThread {
@@ -120,19 +104,15 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+            updateFolderCount()
 
         }
         notesViewModel.updateDB(notesDB)
         foldersViewModel.updateDB(foldersDB)
-
         setUpToolbar()
-
         binding?.apply {
-//            val navView: BottomNavigationView = navView
-//            setSupportActionBar(topAppBar)
+
             val navController = findNavController(R.id.nav_host_fragment_activity_main)
-            // Passing each menu ID as a set of Ids because each
-            // menu should be considered as top level destinations.
             val appBarConfiguration = AppBarConfiguration(
                 setOf(
                     R.id.foldersFragment , R.id.notesFragment
@@ -140,20 +120,34 @@ class MainActivity : AppCompatActivity() {
             )
             setupActionBarWithNavController(navController, appBarConfiguration)
             navView.setupWithNavController(navController)
-
             addButton.setOnClickListener(View.OnClickListener {
                 if(navController.currentDestination?.id  == R.id.notesFragment){
-                    var n = Note(0,"New note",2,"...")
-                    GlobalScope.launch{notesDB.noteDAO().addNote(n)}
-                    editNoteViewModel!!.setNote(n)
+                    var n = Note(0,"New note",1,"...")
+                    GlobalScope.launch{
+                        notesDB.noteDAO().addNote(n)
+                        foldersDB.folderDAO().incrementNoteCount(1)
+                        Log.d("note being created", "  : $n ")
+                    }
+                    notesDB.noteDAO().getNotesList().observe(this@MainActivity){
+                        if (it != null) {
+                            if (it.isNotEmpty()) {
+                                Log.d("note being created 2", "  $it \n::::: ${it.last()} ")
+                                editNoteViewModel!!.setNote(it.last())
+                            }
+                        }
+                    }
+//                    Log.d("note being created 2", "  : $n ")
+//                    editNoteViewModel!!.setNote(n)
                 }
                 if(navController.currentDestination?.id == R.id.foldersFragment){
                     var f = Folder(0,"new Folder" , 0)
                     GlobalScope.launch {foldersDB.folderDAO().addFolder(f) }
                     viewNotesinFolderViewModel!!.setViewFolder(f)
                 }
+                updateFolderCount()
             })
         }
+
 
         editNoteViewModel!!.getNote().observe(this){
             if(it!=null) {
@@ -182,13 +176,15 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+
     override fun onStart() {
         super.onStart()
+        addflag=false
         runOnUiThread {
             notesDB.noteDAO().getNotesList().observe(this@MainActivity){
                 if(it!=null)
                     if(it.isNotEmpty()){
-                        Log.d("NOTES LIST DATA::::", "${it}")
+                        Log.d("NOTES start DATA::::", "${it}")
                         notesViewModel.updateNoteList(it)
 
                     }
@@ -198,7 +194,7 @@ class MainActivity : AppCompatActivity() {
             foldersDB.folderDAO().getFolderList().observe(this@MainActivity){
                 if(it!=null)
                     if(it.isNotEmpty()){
-                        Log.d("FOLDERS LIST DATA::::", "${it}")
+                        Log.d("FOLDERS start DATA::::", "${it}")
                         foldersViewModel.updateFolderList(it)
                     }
             }

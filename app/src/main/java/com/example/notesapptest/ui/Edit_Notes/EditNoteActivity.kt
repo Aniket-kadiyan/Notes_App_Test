@@ -10,8 +10,10 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.example.notesapptest.MainActivity
+import com.example.notesapptest.R
 import com.example.notesapptest.data_models.FolderDatabase
 import com.example.notesapptest.data_models.NoteDatabase
 import com.example.notesapptest.databinding.EditnotelayoutBinding
@@ -31,6 +33,7 @@ class EditNoteActivity : AppCompatActivity() {
     private lateinit var notesViewModel: NotesViewModel
     private var editNoteViewModel : EditNoteViewModel?=null
     var id =0
+    var folder_id = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +56,7 @@ class EditNoteActivity : AppCompatActivity() {
 
                binding?.noteTitleInput?.setText( it.get(0).noteTitle, TextView.BufferType.EDITABLE)
                binding?.noteContentInput?.setText(it.get(0).content,TextView.BufferType.EDITABLE)
+               folder_id = it.get(0).folderId
            }
        }
        binding?.apply {
@@ -98,8 +102,22 @@ class EditNoteActivity : AppCompatActivity() {
            changeFolderButtoneditNote.setOnClickListener {
                val dialog = BottomSheetDialog(this@EditNoteActivity)
                dialog.setCancelable(true)
-//               val view = layoutInflater.inflate(R.layout.)
-//               dialog.setContentView(layoutInflater.inflate())
+               val modalview = layoutInflater.inflate(R.layout.change_folder_bottommodal_layout,null)
+               val changefolderRV = modalview.findViewById<RecyclerView>(R.id.changeFolderModalRV)
+               val currentFolderTV = modalview.findViewById<TextView>(R.id.currentFoldertextView)
+               val nextFolderTV = modalview.findViewById<TextView>(R.id.newFoldertextView)
+               val changeButton = modalview.findViewById<Button>(R.id.changeFolderButton)
+                currentFolderTV.text = foldersDB.folderDAO().getFolderbyID(folder_id).get(0).folderTitle
+               var folderlist = foldersDB.folderDAO().getCurrrentFolderList()
+               val adapter = ChangeFolderModalAdapter(folderlist , nextFolderTV)
+               changefolderRV.adapter = adapter
+               changeButton.setOnClickListener {
+                   notesDB.noteDAO().updateFolderID(adapter.selectedfolderid , id)
+                   dialog.dismiss()
+               }
+
+               dialog.setContentView(modalview)
+               dialog.show()
            }
            showOptionsButtoneditNote.setOnClickListener(){
                if( deleteNoteButton.isVisible == false && saveNoteButton.isVisible == false && changeFolderButtoneditNote.isVisible == false ){

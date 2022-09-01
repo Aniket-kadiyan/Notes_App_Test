@@ -147,7 +147,66 @@ class ViewNotesinFolderActivity : AppCompatActivity() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        if(id==1){
+            runOnUiThread {
+                notesDB.noteDAO().getNotesList().observe(this){
+                    if(it!=null)
+                        if(it.isNotEmpty()){
+                            Log.d("NOTES LIST DATA::::", "in view notes in folder:::${it}")
+                            var adapter = NoteAdapter(it , editNoteViewModel!!)
+                            binding?.viewNotesinFolderRV?.adapter =adapter
+                        }
+                }
+            }
+        }
+        else{
+            runOnUiThread {
+                notesDB.noteDAO().getNotesinFolder(id!!).observe(this){
+                    if(it!=null)
+                        if(it.isNotEmpty()){
+                            Log.d("NOTES LIST DATA::::", " in view notes in folder::: ${it}")
+                            var adapter = NoteAdapter(it , editNoteViewModel!!)
 
+                            binding?.viewNotesinFolderRV?.adapter =adapter
+                        }
+                }
+            }
+
+        }
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if(id==1){
+            runOnUiThread {
+                notesDB.noteDAO().getNotesList().observe(this){
+                    if(it!=null)
+                        if(it.isNotEmpty()){
+                            Log.d("NOTES LIST DATA::::", "in view notes in folder:::${it}")
+                            var adapter = NoteAdapter(it , editNoteViewModel!!)
+                            binding?.viewNotesinFolderRV?.adapter =adapter
+                        }
+                }
+            }
+        }
+        else{
+            runOnUiThread {
+                notesDB.noteDAO().getNotesinFolder(id!!).observe(this){
+                    if(it!=null)
+                        if(it.isNotEmpty()){
+                            Log.d("NOTES LIST DATA::::", " in view notes in folder::: ${it}")
+                            var adapter = NoteAdapter(it , editNoteViewModel!!)
+
+                            binding?.viewNotesinFolderRV?.adapter =adapter
+                        }
+                }
+            }
+
+        }
+    }
     private fun setUpToolbar() {
         setSupportActionBar(binding?.topapptoolbarviewNoteinFolder)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

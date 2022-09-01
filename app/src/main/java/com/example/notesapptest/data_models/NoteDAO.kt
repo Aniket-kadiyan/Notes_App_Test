@@ -40,6 +40,9 @@ interface NoteDAO {
     @Query("UPDATE Notes SET content = :content WHERE noteId = :id")
     fun updateNoteContent(content : String,  id : Int)
 
+    @Query("UPDATE Notes SET folder = :folderid WHERE noteId = :id")
+    fun updateFolderID(folderid : Int,  id : Int)
+
     @Query("Delete from Notes where noteId = :id")
     fun deleteNotebyID(id: Int)
 }

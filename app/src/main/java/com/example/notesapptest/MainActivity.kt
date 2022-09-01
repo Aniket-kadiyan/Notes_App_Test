@@ -176,6 +176,10 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        updateFolderCount()
+    }
 
     override fun onStart() {
         super.onStart()

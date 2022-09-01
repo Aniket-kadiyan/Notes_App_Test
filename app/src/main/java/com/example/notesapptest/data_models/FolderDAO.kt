@@ -26,6 +26,10 @@ interface FolderDAO {
     @Query("SELECT * FROM Folders WHERE title=:title")
     fun ifFolderExists( title:String) : Boolean
 
+    @Query("SELECT * FROM Folders WHERE folderId = :id")
+    fun getFolderbyID( id:Int) : List<Folder>
+
+
     @Query("UPDATE Folders SET notes_count=notes_count+1 WHERE folderId=:id")
     fun incrementNoteCount(id:Int)
 

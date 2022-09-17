@@ -3,13 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/NotesAppTest/app/src/main/res/drawable-anydpi/ic_selected.xml" value="0.2465" />
+        <entry key="..\:/NotesAppTest/app/src/main/res/drawable-anydpi/ic_selected_radio.xml" value="0.2465" />
         <entry key="..\:/NotesAppTest/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.2465" />
         <entry key="..\:/NotesAppTest/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.2465" />
         <entry key="..\:/NotesAppTest/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/NotesAppTest/app/src/main/res/layout/add_folder_modal.xml" value="0.2222222222222222" />
         <entry key="..\:/NotesAppTest/app/src/main/res/layout/change_folder_bottommodal_layout.xml" value="0.25" />
         <entry key="..\:/NotesAppTest/app/src/main/res/layout/change_folder_modal_item.xml" value="0.25" />
+        <entry key="..\:/NotesAppTest/app/src/main/res/layout/color_pallete_item_layout.xml" value="0.24895833333333334" />
         <entry key="..\:/NotesAppTest/app/src/main/res/layout/editnotelayout.xml" value="0.22554347826086957" />
-        <entry key="..\:/NotesAppTest/app/src/main/res/layout/folder_item_layout.xml" value="0.25" />
+        <entry key="..\:/NotesAppTest/app/src/main/res/layout/folder_item_layout.xml" value="0.536" />
         <entry key="..\:/NotesAppTest/app/src/main/res/layout/fragment_dashboard.xml" value="0.25" />
         <entry key="..\:/NotesAppTest/app/src/main/res/layout/fragment_folders.xml" value="0.25" />
         <entry key="..\:/NotesAppTest/app/src/main/res/layout/fragment_notes.xml" value="0.20244565217391305" />

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notesapptest.R
 import com.example.notesapptest.data_models.Folder
@@ -18,6 +19,7 @@ class ChangeFolderModalAdapter(private var folderList : List<Folder> , private v
         fun bind(folder : Folder){
             binding.apply {
                 folderItemTV.setText(folder.folderTitle)
+                folderItemTV.setBackgroundColor(folder.folderColor.toColorInt())
             }
         }
     }

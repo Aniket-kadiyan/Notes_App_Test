@@ -8,5 +8,10 @@
         app:showAsAction="always"
         android:icon="@drawable/icons8_delete_24"
         />
+    <item
+        android:title="Populate"
+        android:id="@+id/toppop"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/notes_item_bg"/>
 
 </menu>

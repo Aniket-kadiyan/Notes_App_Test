@@ -51,7 +51,22 @@
         android:padding="1dp"
         app:menu="@menu/delete_item"
         app:navigationIcon="@drawable/ic_home_black_24dp"
-        app:title="@string/page_title" />
+        app:title="@string/page_title">
+
+        <ImageButton
+            android:id="@+id/noteinfoldertopDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="end"
+            android:layout_marginRight="10dp"
+            android:background="@color/yellow_2"
+            android:contentDescription="delete button"
+            android:minWidth="48dp"
+            android:src="@drawable/icons8_delete_24"
+            android:visibility="invisible"
+            tools:visibility="visible" />
+
+    </com.google.android.material.appbar.MaterialToolbar>
 
 
 <!--    <Button-->

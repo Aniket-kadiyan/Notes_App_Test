@@ -17,24 +17,31 @@ import com.example.notesapptest.R
 import com.example.notesapptest.data_models.FolderDatabase
 import com.example.notesapptest.data_models.NoteDatabase
 import com.example.notesapptest.databinding.EditnotelayoutBinding
+import com.example.notesapptest.observeOnce
 import com.example.notesapptest.ui.Folders.FoldersViewModel
 import com.example.notesapptest.ui.Notes.NotesViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class EditNoteActivity : AppCompatActivity() {
     private var _binding : EditnotelayoutBinding?=null
     val binding
     get() =_binding
+    @Inject
     lateinit var foldersDB : FolderDatabase
+    @Inject
     lateinit var notesDB : NoteDatabase
     private lateinit var foldersViewModel: FoldersViewModel
     private lateinit var notesViewModel: NotesViewModel
     private var editNoteViewModel : EditNoteViewModel?=null
     var id =0
     var folder_id = 0
-
+    var note_title="hello"
+    var note_content="world"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding= EditnotelayoutBinding.inflate(layoutInflater)
@@ -43,19 +50,19 @@ class EditNoteActivity : AppCompatActivity() {
         notesViewModel= ViewModelProvider(this).get(NotesViewModel::class.java)
         foldersViewModel= ViewModelProvider(this).get(FoldersViewModel::class.java)
         editNoteViewModel = ViewModelProvider(this).get(EditNoteViewModel::class.java)
-        notesDB = Room.databaseBuilder(applicationContext, NoteDatabase::class.java, "notesDB").allowMainThreadQueries().build()
-        foldersDB= Room.databaseBuilder(applicationContext,FolderDatabase::class.java,"foldersDB").allowMainThreadQueries().build()
+//        notesDB = Room.databaseBuilder(applicationContext, NoteDatabase::class.java, "notesDB").allowMainThreadQueries().build()
+//        foldersDB= Room.databaseBuilder(applicationContext,FolderDatabase::class.java,"foldersDB").allowMainThreadQueries().build()
         setUpToolbar()
-        var title="hello"
-        var content="world"
+
 
         var bundle = intent.extras!!
         id = bundle.getInt("note_id")
-       notesDB.noteDAO().getNotebyID(id).observe(this){
+       notesDB.noteDAO().getNotebyID(id).observeOnce(this){
            if(!it.isEmpty()){
-
-               binding?.noteTitleInput?.setText( it.get(0).noteTitle, TextView.BufferType.EDITABLE)
-               binding?.noteContentInput?.setText(it.get(0).content,TextView.BufferType.EDITABLE)
+               if(it.get(0).noteTitle!="")
+                   binding?.noteTitleInput?.setText( it.get(0).noteTitle, TextView.BufferType.EDITABLE)
+               if(it.get(0).content!="")
+                   binding?.noteContentInput?.setText(it.get(0).content,TextView.BufferType.EDITABLE)
                folder_id = it.get(0).folderId
            }
        }
@@ -82,7 +89,24 @@ class EditNoteActivity : AppCompatActivity() {
 //
 //               }
 //           })
-
+            editnotetopSave.setOnClickListener {
+                GlobalScope.launch {
+                    if (noteContentInput.text.toString() == "" && noteTitleInput.text.toString() == "")
+                        notesDB.noteDAO().deleteNotebyID(id)
+                    else {
+                        notesDB.noteDAO().updateNoteTitle(noteTitleInput.text.toString(), id)
+                        Log.d(
+                            "note title update:::",
+                            "id = $id  title = ${noteTitleInput.text.toString()}"
+                        )
+                        notesDB.noteDAO().updateNoteContent(noteContentInput.text.toString(), id)
+                    }
+                    var intent = Intent(applicationContext, MainActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    this@EditNoteActivity.applicationContext.startActivity(intent)
+                }
+            }
            saveNoteButton.setOnClickListener(){
                GlobalScope.launch {
                    notesDB.noteDAO().updateNoteTitle(noteTitleInput.text.toString() ,id)
@@ -91,12 +115,14 @@ class EditNoteActivity : AppCompatActivity() {
                    }
                var intent = Intent(applicationContext , MainActivity::class.java)
                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+               intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                this@EditNoteActivity.applicationContext.startActivity(intent)
            }
            deleteNoteButton.setOnClickListener(){
                notesDB.noteDAO().deleteNotebyID(id)
                var intent = Intent(applicationContext , MainActivity::class.java)
                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+               intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                this@EditNoteActivity.applicationContext.startActivity(intent)
            }
            changeFolderButtoneditNote.setOnClickListener {
@@ -143,9 +169,24 @@ class EditNoteActivity : AppCompatActivity() {
 //        binding?.noteContentInput?.setText(content,TextView.BufferType.EDITABLE)
     }
 
+    override fun onBackPressed() {
+        note_title = binding?.noteTitleInput!!.text.toString()
+        note_content = binding?.noteContentInput!!.text.toString()
+
+            if(note_content=="" && note_title=="")
+                binding?.deleteNoteButton!!.callOnClick()
+            else{
+                binding?.editnotetopSave?.performClick()
+            }
+            super.onBackPressed()
+
+
+    }
+
     private fun setUpToolbar() {
         setSupportActionBar(binding?.topapptoolbareditnote)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        supportActionBar?.setDisplayShowHomeEnabled(false)
         supportActionBar?.setDisplayShowTitleEnabled(true)
 //        supportActionBar?.hide()
     }

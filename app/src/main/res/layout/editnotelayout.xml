@@ -14,7 +14,17 @@
         android:elevation="3dp"
         app:menu="@menu/top_app_bar"
         app:navigationIcon="@drawable/ic_home_black_24dp"
-        app:title="@string/page_title" />
+        app:title="@string/page_title">
+
+        <ImageButton
+            android:id="@+id/editnotetopSave"
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="end"
+            android:layout_marginRight="8dp"
+            android:background="@color/yellow_2"
+            android:src="@drawable/icons8_save_50" />
+    </com.google.android.material.appbar.MaterialToolbar>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/showOptionsButtoneditNote"
@@ -23,6 +33,7 @@
         android:clickable="true"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        tools:visibility="visible"
         android:layout_margin="4dp"
         app:srcCompat="@android:drawable/ic_menu_sort_by_size" />
 
@@ -35,6 +46,7 @@
         android:layout_alignParentRight="true"
         android:layout_margin="4dp"
         android:visibility="invisible"
+        tools:visibility="visible"
         app:srcCompat="@drawable/icons8_delete_24" />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/changeFolderButtoneditNote"
@@ -45,6 +57,7 @@
         android:layout_alignParentRight="true"
         android:layout_margin="4dp"
         android:visibility="invisible"
+        tools:visibility="visible"
         app:srcCompat="@drawable/ic_action_folder_open" />
 <!--    <ImageButton-->
 <!--        android:id="@+id/saveNote"-->
@@ -114,8 +127,9 @@
         android:clickable="true"
         android:layout_above="@id/showOptionsButtoneditNote"
         android:layout_alignParentRight="true"
-        android:layout_margin="10dp"
+        android:layout_margin="4dp"
         android:visibility="invisible"
+        tools:visibility="visible"
         android:padding="10dp"
         app:srcCompat="?android:attr/textCheckMarkInverse" />
 </RelativeLayout>

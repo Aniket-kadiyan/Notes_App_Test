@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/color_pallete_CV"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layout_constraintDimensionRatio="1">
+
+    <Button
+        android:id="@+id/col_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintDimensionRatio="1"
+        android:minHeight="50dp"
+        android:minWidth="50dp"
+        android:contentDescription="color"
+        />
+</androidx.cardview.widget.CardView>

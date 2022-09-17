@@ -7,8 +7,12 @@ import com.example.notesapptest.data_models.Folder
 import com.example.notesapptest.data_models.FolderDatabase
 import com.example.notesapptest.data_models.Note
 import com.example.notesapptest.data_models.NoteDatabase
+import com.example.notesapptest.retrofit_test.QuotesAPI
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class NotesViewModel : ViewModel() {
+@HiltViewModel
+class NotesViewModel @Inject constructor(private val repo: QuotesAPI) : ViewModel() {
 
     private val noteList = MutableLiveData<List<Note>>()
     private val notesDB = MutableLiveData<NoteDatabase>()

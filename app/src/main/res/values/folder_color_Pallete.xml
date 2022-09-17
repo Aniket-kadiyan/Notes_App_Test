@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="color_pallete">
+        <item>#FFCC66</item>
+        <item>#ffeb66</item>
+        <item>#ffff66</item>
+        <item>#FF000000</item>
+        <item>#FF9900</item>
+        <item>#FF00FF</item>
+        <item>#FF0000</item>
+        <item>#FFBB86FC</item>
+        <item>#FF6200EE</item>
+        <item>#FF018786</item>
+        <item>#FF03DAC5</item>
+        <item>#FFC0CB</item>
+        <item>#FF69B4</item>
+        <item>#FF10F0</item>
+        <item>#F33A6A</item>
+        <item>#E0115F</item>
+        <item>#E37383</item>
+    </array>
+</resources>

@@ -9,5 +9,6 @@ import androidx.room.PrimaryKey
 data class Folder(
     @PrimaryKey (autoGenerate = true) val folderId : Int,
     @ColumnInfo (name = "title") val folderTitle : String,
-    @ColumnInfo (name = "notes_count") val notesCount : Int
+    @ColumnInfo (name = "notes_count") val notesCount : Int,
+    @ColumnInfo (name = "folder_color") val folderColor : String
 )

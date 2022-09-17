@@ -6,8 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.notesapptest.data_models.Folder
 import com.example.notesapptest.data_models.FolderDatabase
+import com.example.notesapptest.retrofit_test.QuotesAPI
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class FoldersViewModel : ViewModel() {
+@HiltViewModel
+class FoldersViewModel @Inject constructor(private val repo: QuotesAPI)  : ViewModel() {
 
     private val folderList = MutableLiveData<List<Folder>>()
     private val foldersDB = MutableLiveData<FolderDatabase>()

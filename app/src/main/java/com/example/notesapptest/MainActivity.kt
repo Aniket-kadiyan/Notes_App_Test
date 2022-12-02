@@ -1,5 +1,7 @@
 package com.example.notesapptest
 
+import android.app.ActivityManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -38,10 +40,15 @@ import com.example.notesapptest.ui.Notes.NotesViewModel
 import com.example.notesapptest.ui.View_Notes_in_Folder.ViewNotesinFolderActivity
 import com.example.notesapptest.ui.View_Notes_in_Folder.ViewNotesinFolderViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.google.firebase.database.*
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -49,6 +56,9 @@ class MainActivity : AppCompatActivity() {
     private var _binding : ActivityMainBinding?=null
     val binding
     get()=_binding
+
+    private lateinit var auth: FirebaseAuth
+
 
     @Inject
     lateinit var foldersDB : FolderDatabase
@@ -63,6 +73,7 @@ class MainActivity : AppCompatActivity() {
     private val deletionViewModel : DeletionViewModel by viewModels()
     var addflag=false
     var deliconflag = MutableLiveData<Int>(0)
+    val fDBreference = FirebaseDatabase.getInstance().reference;
 
 
     fun updateFolderCount(){
@@ -80,6 +91,8 @@ class MainActivity : AppCompatActivity() {
 
         Log.d("current folders list", ":: $flist ")
     }
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,7 +120,15 @@ class MainActivity : AppCompatActivity() {
 //        }
         //</editor-fold>
 
-
+        val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val avm = ActivityManager.MemoryInfo().also {
+            activityManager.getMemoryInfo(it)
+        }
+        Log.d("memory:::","" +
+                "\n\t$avm" +
+                "\n\t avilable \t:${avm.availMem}" +
+                "\n\t total    \t:${avm.totalMem}" +
+                "\n\t threshold\t:${avm.threshold}")
 
         GlobalScope.launch {
             notesDB.apply {

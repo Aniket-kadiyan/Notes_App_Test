@@ -9,11 +9,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ViewNotesinFolderViewModel @Inject constructor(private val repo: QuotesAPI): ViewModel() {
-    private val viewFolder = MutableLiveData<Folder>()
 
-    fun getViewFolder() : MutableLiveData<Folder> = viewFolder
+    private val _view_folder = MutableLiveData<Folder>()
+
+    val view_folder
+        get() = _view_folder
+
+    fun getViewFolder() : MutableLiveData<Folder> = _view_folder
      fun setViewFolder(folder : Folder){
-         viewFolder.value =folder
+         _view_folder.value =folder
      }
 
 
